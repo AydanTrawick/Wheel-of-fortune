@@ -1,0 +1,92 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+// Copy over the 4 functions you created and paste them starting on line 6
+//function 1
+int getNumOccurrences( char letter,string answer) {
+    int count = 0;
+    for (int index = 0; index < answer.length(); index++) {
+        if (answer[index] == letter) {
+            count++;
+        }
+    }
+    return count;
+}
+
+//function 2
+string updatePuzzle(char letter, string puzzle, string answer) {
+    string updatedPuzzle = puzzle;
+    for (int i = 0; i < answer.length(); i++) {
+        if (letter == answer[i]) {
+            updatedPuzzle[i] = letter;
+        }
+    }
+    return updatedPuzzle;
+}
+
+//function 3
+char getCapitalLetter() {
+    cout << "Guess a letter: ";
+    char letter;
+    cin >> letter;
+    letter = toupper(letter);
+    return letter;
+}
+
+// function 4
+void printEndMessage(int numMistakes, int totalMoney) {
+    cout << "You made " << numMistakes << " mistake(s) and won $" << totalMoney << endl;
+}
+
+// A very basic function that always returns $500.
+// Do not modify (needed for autograder)
+int spinWheel() {
+  return 500;
+}
+
+// This function accepts an answer, and replaces all the non-space
+// characters with underscores.
+string makePuzzle(string answer) {
+  string puzzle = answer;
+  for (int index = 0; index < answer.length(); index++) {
+    if (answer[index] != ' ') {
+      puzzle[index] = '_';
+    }
+  }
+  return puzzle;
+}
+
+int main() {
+  string answer, puzzle;
+  cout << "Create a fully capitalized answer for testing: ";
+  // getline() uses cin to get a whole line of user input including spaces
+  // and saves that to the variable, answer. Like cin >> answer, but reads spaces as well
+  getline(cin, answer);
+  puzzle = makePuzzle(answer);
+
+  // Write your code below this line
+   
+  int moneyTotal = 0;
+  int numMistakes = 0;
+
+  while (puzzle != answer) {
+    int spin = spinWheel();
+    char letter = getCapitalLetter();
+    int numOccurrences = getNumOccurrences(letter, answer);
+
+    if (numOccurrences == 0) {
+      numMistakes++;
+      cout << letter << " not in puzzle." << endl;
+    } else {
+      moneyTotal += spin * numOccurrences;
+      puzzle = updatePuzzle(letter, puzzle, answer);
+      cout << puzzle << endl;
+    }
+  }
+
+  printEndMessage(numMistakes, moneyTotal);
+
+  return 0;
+  
+}
